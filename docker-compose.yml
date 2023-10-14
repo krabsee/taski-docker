@@ -1,34 +1,22 @@
-# Версия docker-compose
 version: '3'
 
-# Перечень volume
 volumes:
   pg_data:
   static:
 
-# Перечень контейнеров
 services:
-  # Имя и описание первого контейнера; имя выбирает разработчик. 
-  # Это контейнер БД
-  db:
-    # Из какого образа запустить контейнер:
-    image: postgres:13.10
-    # Файл (или список файлов) с переменными окружения
-    env_file: .env
-    # Какой volume подключить для этого контейнера
+  db:    
+    image: postgres:13.10    
+    env_file: .env    
     volumes:
       - pg_data:/var/lib/postgresql/data
-  # Имя и описание контейнера с бэкендом
-  backend:
-    # Из какого Dockerfile собирать образ для этого контейнера:
+  backend:    
     build: ./backend/
-    env_file: .env
-    # Какие контейнеры нужно запустить до старта этого контейнера:
+    env_file: .env    
     depends_on:
       - db
     volumes:
-      - static:/backend_static
-  # Имя третьего контейнера. Это контейнер с фронтендом
+      - static:/backend_static       
   frontend:
     env_file: .env
     build: ./frontend/ 
